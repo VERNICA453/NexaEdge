@@ -1,0 +1,68 @@
+import os
+import librosa
+import librosa.display
+import matplotlib.pyplot as plt
+
+DATASET_PATH = "Dataset_Split"
+
+audio_files = []
+
+# Find all WAV files
+for root, folders, files in os.walk(DATASET_PATH):
+    for file in files:
+        if file.lower().endswith(".wav"):
+            audio_files.append(os.path.join(root, file))
+
+print("================================")
+print("DAY 2 - MFCC PROCESSING")
+print("================================")
+
+print("Total WAV files:", len(audio_files))
+
+if len(audio_files) > 0:
+
+    # Select first audio file
+    file_path = audio_files[0]
+
+    print("\nProcessing file:")
+    print(file_path)
+
+    # Load audio at 16 kHz
+    audio, sr = librosa.load(file_path, sr=16000)
+
+    print("\nSample Rate:", sr)
+    print("Audio Samples:", len(audio))
+
+    # Extract MFCC
+    mfcc = librosa.feature.mfcc(
+        y=audio,
+        sr=sr,
+        n_mfcc=13,
+        n_fft=512,
+        hop_length=160
+    )
+
+    print("MFCC Shape:", mfcc.shape)
+
+    print("\nMFCC extraction completed!")
+
+    # Display MFCC
+    plt.figure(figsize=(10, 4))
+
+    librosa.display.specshow(
+        mfcc,
+        x_axis="time",
+        sr=sr,
+        hop_length=160
+    )
+
+    plt.colorbar()
+    plt.title("MFCC Features")
+    plt.xlabel("Time")
+    plt.ylabel("MFCC Coefficients")
+
+    plt.tight_layout()
+    plt.show()
+
+else:
+    print("\nNo WAV files found!")

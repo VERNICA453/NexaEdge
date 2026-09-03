@@ -1,0 +1,179 @@
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras import layers, models, callbacks
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+
+print("========================================")
+print("DAY 8 - IMPROVED CNN MODEL (CNN V2)")
+print("========================================")
+
+# Load MFCC dataset
+X = np.load("X_mfcc.npy")
+y = np.load("y_labels.npy")
+
+print("Original X Shape:", X.shape)
+print("Original Y Shape:", y.shape)
+
+# Convert to float32
+X = X.astype(np.float32)
+
+# Add CNN channel dimension
+X = X[..., np.newaxis]
+
+print("CNN Input Shape:", X.shape)
+
+# Encode labels
+label_encoder = LabelEncoder()
+y_encoded = label_encoder.fit_transform(y)
+
+print("\nClasses:")
+for i, label in enumerate(label_encoder.classes_):
+    print(i, "=", label)
+
+# Same split as CNN v1
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y_encoded,
+    test_size=0.20,
+    random_state=42,
+    stratify=y_encoded
+)
+
+print("\nTraining samples:", len(X_train))
+print("Testing samples:", len(X_test))
+
+# ========================================
+# IMPROVED CNN MODEL - CNN V2
+# ========================================
+
+model = models.Sequential([
+
+    layers.Input(shape=(13, 401, 1)),
+
+    # First convolution block
+    layers.Conv2D(
+        16,
+        (3, 3),
+        padding="same",
+        activation="relu"
+    ),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D((2, 2)),
+
+    # Second convolution block
+    layers.Conv2D(
+        32,
+        (3, 3),
+        padding="same",
+        activation="relu"
+    ),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D((2, 2)),
+
+    # Third convolution block
+    layers.Conv2D(
+        64,
+        (3, 3),
+        padding="same",
+        activation="relu"
+    ),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D((2, 2)),
+
+    # Reduce parameters
+    layers.GlobalAveragePooling2D(),
+
+    # Fully connected layer
+    layers.Dense(64, activation="relu"),
+
+    # Reduce overfitting
+    layers.Dropout(0.4),
+
+    # Output layer
+    layers.Dense(
+        len(label_encoder.classes_),
+        activation="softmax"
+    )
+])
+
+# Display model structure
+model.summary()
+
+# Compile model
+model.compile(
+    optimizer="adam",
+    loss="sparse_categorical_crossentropy",
+    metrics=["accuracy"]
+)
+
+# ========================================
+# CALLBACKS
+# ========================================
+
+early_stopping = callbacks.EarlyStopping(
+    monitor="val_loss",
+    patience=5,
+    restore_best_weights=True
+)
+
+reduce_lr = callbacks.ReduceLROnPlateau(
+    monitor="val_loss",
+    factor=0.5,
+    patience=2,
+    min_lr=0.00001
+)
+
+# ========================================
+# TRAIN MODEL
+# ========================================
+
+print("\nStarting CNN V2 training...")
+
+history = model.fit(
+    X_train,
+    y_train,
+    epochs=20,
+    batch_size=16,
+    validation_split=0.2,
+    callbacks=[early_stopping, reduce_lr],
+    verbose=1
+)
+
+# ========================================
+# TEST MODEL
+# ========================================
+
+loss, accuracy = model.evaluate(
+    X_test,
+    y_test,
+    verbose=0
+)
+
+print("\n========================================")
+print("CNN V2 RESULTS")
+print("========================================")
+
+print("Test Loss:", loss)
+print("Test Accuracy:", accuracy * 100, "%")
+
+# ========================================
+# SAVE MODEL
+# ========================================
+
+model.save("kws_cnn_model_v2.keras")
+
+np.save(
+    "label_classes_v2.npy",
+    label_encoder.classes_
+)
+
+print("\nModel saved as:")
+print("kws_cnn_model_v2.keras")
+
+print("\nLabels saved as:")
+print("label_classes_v2.npy")
+
+print("\n========================================")
+print("DAY 8 COMPLETED SUCCESSFULLY")
+print("========================================")

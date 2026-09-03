@@ -1,0 +1,130 @@
+import os
+import numpy as np
+import librosa
+import tensorflow as tf
+
+print("================================")
+print("DAY 6 - REAL AUDIO PREDICTION")
+print("================================")
+
+# -------------------------------
+# Load trained CNN model
+# -------------------------------
+
+model = tf.keras.models.load_model("kws_cnn_model.keras")
+
+# Load class names
+classes = np.load("label_classes.npy", allow_pickle=True)
+
+print("Model loaded successfully!")
+print("Classes:", classes)
+
+# -------------------------------
+# Select audio file
+# -------------------------------
+
+audio_file = input("\nEnter WAV file path: ").strip()
+
+if not os.path.exists(audio_file):
+    print("\nERROR: Audio file not found!")
+    exit()
+
+# -------------------------------
+# Load audio
+# -------------------------------
+
+audio, sr = librosa.load(
+    audio_file,
+    sr=16000
+)
+
+print("\nAudio file:", audio_file)
+print("Sample Rate:", sr)
+print("Audio Samples:", len(audio))
+
+# -------------------------------
+# Extract MFCC
+# -------------------------------
+
+mfcc = librosa.feature.mfcc(
+    y=audio,
+    sr=sr,
+    n_mfcc=13,
+    n_fft=512,
+    hop_length=160
+)
+
+# -------------------------------
+# Make 401 frames
+# -------------------------------
+
+target_frames = 401
+
+if mfcc.shape[1] < target_frames:
+
+    padding = target_frames - mfcc.shape[1]
+
+    mfcc = np.pad(
+        mfcc,
+        ((0, 0), (0, padding)),
+        mode="constant"
+    )
+
+else:
+
+    mfcc = mfcc[:, :target_frames]
+
+print("MFCC Shape:", mfcc.shape)
+
+# -------------------------------
+# Prepare CNN input
+# -------------------------------
+
+mfcc = mfcc.astype(np.float32)
+
+mfcc = mfcc[np.newaxis, ..., np.newaxis]
+
+print("CNN Input Shape:", mfcc.shape)
+
+# -------------------------------
+# Prediction
+# -------------------------------
+
+prediction = model.predict(
+    mfcc,
+    verbose=0
+)
+
+predicted_index = np.argmax(prediction)
+
+predicted_class = classes[predicted_index]
+
+confidence = prediction[0][predicted_index] * 100
+
+# -------------------------------
+# Display result
+# -------------------------------
+
+print("\n================================")
+print("PREDICTION RESULT")
+print("================================")
+
+print("Predicted Class:", predicted_class)
+print("Confidence:", round(float(confidence), 2), "%")
+
+print("\nAll Class Probabilities:")
+
+for i, class_name in enumerate(classes):
+
+    probability = prediction[0][i] * 100
+
+    print(
+        class_name,
+        ":",
+        round(float(probability), 2),
+        "%"
+    )
+
+print("\n================================")
+print("DAY 6 COMPLETED SUCCESSFULLY")
+print("================================")

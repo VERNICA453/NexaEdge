@@ -1,0 +1,148 @@
+import numpy as np
+import tensorflow as tf
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import accuracy_score, classification_report
+
+print("========================================")
+print("DAY 10 - CNN MODEL COMPARISON")
+print("========================================")
+
+# Load dataset
+X = np.load("X_mfcc.npy")
+y = np.load("y_labels.npy")
+
+# Prepare data
+X = X.astype(np.float32)
+X = X[..., np.newaxis]
+
+# Encode labels
+label_encoder = LabelEncoder()
+y_encoded = label_encoder.fit_transform(y)
+
+classes = label_encoder.classes_
+
+print("Classes:", classes)
+
+# Same test split used for both models
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y_encoded,
+    test_size=0.20,
+    random_state=42,
+    stratify=y_encoded
+)
+
+print("Test samples:", len(X_test))
+
+# ========================================
+# CNN V1
+# ========================================
+
+print("\nLoading CNN V1...")
+
+model_v1 = tf.keras.models.load_model(
+    "kws_cnn_model.keras"
+)
+
+pred_v1 = model_v1.predict(
+    X_test,
+    verbose=0
+)
+
+pred_v1 = np.argmax(pred_v1, axis=1)
+
+accuracy_v1 = accuracy_score(
+    y_test,
+    pred_v1
+) * 100
+
+# ========================================
+# CNN V2
+# ========================================
+
+print("Loading CNN V2...")
+
+model_v2 = tf.keras.models.load_model(
+    "kws_cnn_model_v2.keras"
+)
+
+pred_v2 = model_v2.predict(
+    X_test,
+    verbose=0
+)
+
+pred_v2 = np.argmax(pred_v2, axis=1)
+
+accuracy_v2 = accuracy_score(
+    y_test,
+    pred_v2
+) * 100
+
+# ========================================
+# RESULTS
+# ========================================
+
+print("\n========================================")
+print("MODEL COMPARISON")
+print("========================================")
+
+print(
+    f"CNN V1 Accuracy: {accuracy_v1:.2f}%"
+)
+
+print(
+    f"CNN V2 Accuracy: {accuracy_v2:.2f}%"
+)
+
+difference = accuracy_v2 - accuracy_v1
+
+print(
+    f"Difference: {difference:+.2f}%"
+)
+
+# ========================================
+# SELECT BEST MODEL
+# ========================================
+
+if accuracy_v2 > accuracy_v1:
+
+    print("\nBEST MODEL: CNN V2")
+    print("Use: kws_cnn_model_v2.keras")
+
+else:
+
+    print("\nBEST MODEL: CNN V1")
+    print("Use: kws_cnn_model.keras")
+
+# ========================================
+# CLASSIFICATION REPORT
+# ========================================
+
+print("\n========================================")
+print("CNN V1 CLASSIFICATION REPORT")
+print("========================================")
+
+print(
+    classification_report(
+        y_test,
+        pred_v1,
+        target_names=classes
+    )
+)
+
+print("\n========================================")
+print("CNN V2 CLASSIFICATION REPORT")
+print("========================================")
+
+print(
+    classification_report(
+        y_test,
+        pred_v2,
+        target_names=classes
+    )
+)
+
+print("\n========================================")
+print("DAY 10 COMPLETED SUCCESSFULLY")
+print("========================================")

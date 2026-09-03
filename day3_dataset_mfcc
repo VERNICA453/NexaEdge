@@ -1,0 +1,97 @@
+import os
+import librosa
+import numpy as np
+
+DATASET_PATH = "Dataset_Split"
+
+X = []
+y = []
+
+# Find all WAV files
+audio_files = []
+
+for root, folders, files in os.walk(DATASET_PATH):
+    for file in files:
+        if file.lower().endswith(".wav"):
+            audio_files.append(os.path.join(root, file))
+
+print("================================")
+print("DAY 3 - DATASET MFCC PROCESSING")
+print("================================")
+
+print("Total WAV files:", len(audio_files))
+
+# Process every audio file
+for i, file_path in enumerate(audio_files):
+
+    try:
+        # Load audio
+        audio, sr = librosa.load(file_path, sr=16000)
+
+        # Extract MFCC
+        mfcc = librosa.feature.mfcc(
+            y=audio,
+            sr=sr,
+            n_mfcc=13,
+            n_fft=512,
+            hop_length=160
+        )
+
+        # Make every MFCC the same size
+        target_frames = 401
+
+        if mfcc.shape[1] < target_frames:
+
+            padding = target_frames - mfcc.shape[1]
+
+            mfcc = np.pad(
+                mfcc,
+                ((0, 0), (0, padding)),
+                mode="constant"
+            )
+
+        else:
+
+            mfcc = mfcc[:, :target_frames]
+
+        # Store MFCC
+        X.append(mfcc)
+
+        # Store folder name as label
+        label = os.path.basename(os.path.dirname(file_path))
+        y.append(label)
+
+        # Progress
+        print(
+            "Processed:",
+            i + 1,
+            "/",
+            len(audio_files)
+        )
+
+    except Exception as e:
+
+        print("Error processing:", file_path)
+        print(e)
+
+# Convert to NumPy arrays
+X = np.array(X)
+y = np.array(y)
+
+print("\n================================")
+print("DATASET PROCESSING COMPLETE")
+print("================================")
+
+print("X Shape:", X.shape)
+print("Y Shape:", y.shape)
+
+print("\nLabels:")
+print(np.unique(y))
+
+# Save dataset
+np.save("X_mfcc.npy", X)
+np.save("y_labels.npy", y)
+
+print("\nFiles saved successfully:")
+print("X_mfcc.npy")
+print("y_labels.npy")

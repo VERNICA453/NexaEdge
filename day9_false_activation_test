@@ -1,0 +1,117 @@
+import os
+import numpy as np
+import librosa
+import tensorflow as tf
+
+print("========================================")
+print("DAY 9 - FALSE ACTIVATION TEST")
+print("========================================")
+
+# Load the best baseline model (CNN v1)
+model = tf.keras.models.load_model("kws_cnn_model.keras")
+
+# Load class names
+classes = np.load("label_classes.npy")
+
+print("Classes:", classes)
+
+# Dataset location
+dataset_path = "Dataset_Split"
+
+# Number of files to test from each class
+files_per_class = 5
+
+total = 0
+correct = 0
+
+print("\n========================================")
+print("TESTING AUDIO FILES")
+print("========================================")
+
+for actual_class in classes:
+
+    class_folder = os.path.join(dataset_path, "Test", actual_class)
+
+    if not os.path.exists(class_folder):
+        print("\nFolder not found:", class_folder)
+        continue
+
+    files = [
+        f for f in os.listdir(class_folder)
+        if f.lower().endswith(".wav")
+    ]
+
+    files = files[:files_per_class]
+
+    print("\nActual Class:", actual_class)
+
+    for file in files:
+
+        file_path = os.path.join(class_folder, file)
+
+        # Load audio at 16 kHz
+        audio, sr = librosa.load(
+            file_path,
+            sr=16000
+        )
+
+        # Extract MFCC
+        mfcc = librosa.feature.mfcc(
+            y=audio,
+            sr=sr,
+            n_mfcc=13,
+            n_fft=512,
+            hop_length=160
+        )
+
+        # Make exactly 401 frames
+        if mfcc.shape[1] < 401:
+            mfcc = np.pad(
+                mfcc,
+                ((0, 0), (0, 401 - mfcc.shape[1]))
+            )
+        else:
+            mfcc = mfcc[:, :401]
+
+        # Convert to CNN input
+        mfcc = mfcc.astype(np.float32)
+        mfcc = mfcc[np.newaxis, ..., np.newaxis]
+
+        # Prediction
+        prediction = model.predict(
+            mfcc,
+            verbose=0
+        )
+
+        predicted_index = np.argmax(prediction[0])
+        predicted_class = classes[predicted_index]
+        confidence = prediction[0][predicted_index] * 100
+
+        total += 1
+
+        if predicted_class == actual_class:
+            correct += 1
+            result = "CORRECT"
+        else:
+            result = "FALSE ACTIVATION"
+
+        print(
+            f"{file[:25]:25} | "
+            f"Predicted: {predicted_class:8} | "
+            f"Confidence: {confidence:6.2f}% | "
+            f"{result}"
+        )
+
+print("\n========================================")
+print("FALSE ACTIVATION TEST RESULTS")
+print("========================================")
+
+if total > 0:
+    accuracy = (correct / total) * 100
+
+    print("Total Files Tested:", total)
+    print("Correct Predictions:", correct)
+    print("Wrong Predictions:", total - correct)
+    print("Test Accuracy:", round(accuracy, 2), "%")
+
+print("\nDAY 9 COMPLETED SUCCESSFULLY")

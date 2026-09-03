@@ -1,0 +1,39 @@
+import numpy as np
+import time
+
+print("================================")
+print("DAY 4 - OPTIMIZATION")
+print("================================")
+
+# Start timer
+start_time = time.time()
+
+# Load MFCC dataset
+X = np.load("X_mfcc.npy")
+y = np.load("y_labels.npy")
+
+print("Original X Shape:", X.shape)
+print("Labels Shape:", y.shape)
+
+# Convert to float32 to reduce memory usage
+X = X.astype(np.float32)
+
+print("Data type after optimization:", X.dtype)
+
+# Add channel dimension for CNN
+X_cnn = X[..., np.newaxis]
+
+print("CNN Input Shape:", X_cnn.shape)
+
+# Calculate memory usage
+memory_mb = X_cnn.nbytes / (1024 * 1024)
+
+# Calculate processing time
+processing_time = time.time() - start_time
+
+print("\nProcessing Time:", processing_time, "seconds")
+print("CNN Data Memory:", memory_mb, "MB")
+
+print("\n================================")
+print("DAY 4 COMPLETED SUCCESSFULLY")
+print("================================")

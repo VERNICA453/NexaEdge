@@ -1,0 +1,89 @@
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import confusion_matrix, classification_report, ConfusionMatrixDisplay
+
+print("================================")
+print("DAY 7 - DATASET EVALUATION")
+print("================================")
+
+# Load dataset
+X = np.load("X_mfcc.npy")
+y = np.load("y_labels.npy")
+
+print("Original X Shape:", X.shape)
+print("Original Y Shape:", y.shape)
+
+# Prepare CNN input
+X = X.astype(np.float32)
+X = X[..., np.newaxis]
+
+# Encode labels
+label_encoder = LabelEncoder()
+y_encoded = label_encoder.fit_transform(y)
+
+print("\nClasses:")
+for i, label in enumerate(label_encoder.classes_):
+    print(i, "=", label)
+
+# Use the SAME split as Day 5
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y_encoded,
+    test_size=0.20,
+    random_state=42,
+    stratify=y_encoded
+)
+
+print("\nTraining samples:", len(X_train))
+print("Testing samples:", len(X_test))
+
+# Load trained model
+model = tf.keras.models.load_model("kws_cnn_model.keras")
+
+print("\nModel loaded successfully!")
+
+# Predict test data
+predictions = model.predict(X_test, verbose=0)
+
+y_pred = np.argmax(predictions, axis=1)
+
+# Classification report
+print("\n================================")
+print("CLASSIFICATION REPORT")
+print("================================")
+
+print(
+    classification_report(
+        y_test,
+        y_pred,
+        target_names=label_encoder.classes_
+    )
+)
+
+# Confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+print("================================")
+print("CONFUSION MATRIX")
+print("================================")
+
+print(cm)
+
+# Display confusion matrix
+display = ConfusionMatrixDisplay(
+    confusion_matrix=cm,
+    display_labels=label_encoder.classes_
+)
+
+display.plot()
+plt.title("CNN Confusion Matrix")
+plt.tight_layout()
+plt.show()
+
+print("\n================================")
+print("DAY 7 COMPLETED SUCCESSFULLY")
+print("================================")

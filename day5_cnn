@@ -1,0 +1,148 @@
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras import layers, models
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+
+print("================================")
+print("DAY 5 - CNN MODEL TRAINING")
+print("================================")
+
+# --------------------------------
+# 1. Load MFCC dataset
+# --------------------------------
+
+X = np.load("X_mfcc.npy")
+y = np.load("y_labels.npy")
+
+print("Original X Shape:", X.shape)
+print("Original Y Shape:", y.shape)
+
+# --------------------------------
+# 2. Convert data to float32
+# --------------------------------
+
+X = X.astype(np.float32)
+
+# Add CNN channel dimension
+X = X[..., np.newaxis]
+
+print("CNN Input Shape:", X.shape)
+
+# --------------------------------
+# 3. Convert labels to numbers
+# --------------------------------
+
+label_encoder = LabelEncoder()
+y_encoded = label_encoder.fit_transform(y)
+
+print("\nClasses:")
+for i, label in enumerate(label_encoder.classes_):
+    print(i, "=", label)
+
+# --------------------------------
+# 4. Split dataset
+# --------------------------------
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y_encoded,
+    test_size=0.20,
+    random_state=42,
+    stratify=y_encoded
+)
+
+print("\nTraining samples:", len(X_train))
+print("Testing samples:", len(X_test))
+
+# --------------------------------
+# 5. Create CNN model
+# --------------------------------
+
+model = models.Sequential([
+
+    layers.Input(shape=(13, 401, 1)),
+
+    layers.Conv2D(16, (3, 3), activation="relu"),
+    layers.MaxPooling2D((2, 2)),
+
+    layers.Conv2D(32, (3, 3), activation="relu"),
+    layers.MaxPooling2D((2, 2)),
+
+    layers.Flatten(),
+
+    layers.Dense(64, activation="relu"),
+
+    layers.Dropout(0.3),
+
+    layers.Dense(
+        len(label_encoder.classes_),
+        activation="softmax"
+    )
+])
+
+# --------------------------------
+# 6. Compile model
+# --------------------------------
+
+model.compile(
+    optimizer="adam",
+    loss="sparse_categorical_crossentropy",
+    metrics=["accuracy"]
+)
+
+print("\nCNN Model:")
+model.summary()
+
+# --------------------------------
+# 7. Train model
+# --------------------------------
+
+print("\n================================")
+print("STARTING TRAINING")
+print("================================")
+
+history = model.fit(
+    X_train,
+    y_train,
+    epochs=20,
+    batch_size=16,
+    validation_split=0.2,
+    verbose=1
+)
+
+# --------------------------------
+# 8. Evaluate model
+# --------------------------------
+
+print("\n================================")
+print("MODEL EVALUATION")
+print("================================")
+
+loss, accuracy = model.evaluate(
+    X_test,
+    y_test,
+    verbose=0
+)
+
+print("Test Loss:", loss)
+print("Test Accuracy:", accuracy * 100, "%")
+
+# --------------------------------
+# 9. Save model
+# --------------------------------
+
+model.save("kws_cnn_model.keras")
+
+# Save class names
+np.save(
+    "label_classes.npy",
+    label_encoder.classes_
+)
+
+print("\n================================")
+print("DAY 5 COMPLETED SUCCESSFULLY")
+print("================================")
+
+print("Model saved as: kws_cnn_model.keras")
+print("Labels saved as: label_classes.npy")
