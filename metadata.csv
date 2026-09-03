@@ -1,0 +1,101 @@
+feature_path,label,label_id,member
+Noise\mem1-vernica\clapping\Clapping.npy,Noise,0,mem1-vernica
+Noise\mem1-vernica\fan\Fan.npy,Noise,0,mem1-vernica
+Noise\mem1-vernica\furniture\Furniture.npy,Noise,0,mem1-vernica
+Noise\mem1-vernica\silence\Silence.npy,Noise,0,mem1-vernica
+Noise\mem2-usha\clapping\26-08-2026 16.56.npy,Noise,0,mem2-usha
+Noise\mem2-usha\clapping\clap.npy,Noise,0,mem2-usha
+Noise\mem2-usha\fan\26-08-2026 16.56(2).npy,Noise,0,mem2-usha
+Noise\mem2-usha\fan\26-08-2026 16.57.npy,Noise,0,mem2-usha
+Noise\mem2-usha\furniture\26-08-2026 16.57(2).npy,Noise,0,mem2-usha
+Noise\mem2-usha\furniture\26-08-2026 16.58.npy,Noise,0,mem2-usha
+Noise\mem2-usha\phone notification\26-08-2026 16.59(3).npy,Noise,0,mem2-usha
+Noise\mem2-usha\phone notification\26-08-2026 17.00(2).npy,Noise,0,mem2-usha
+Noise\mem2-usha\phone notification\26-08-2026 17.00.npy,Noise,0,mem2-usha
+Noise\mem2-usha\silence\26-08-2026 17.01.npy,Noise,0,mem2-usha
+Noise\mem2-usha\silence\26-08-2026 17.02.npy,Noise,0,mem2-usha
+Noise\mem5-aishwinth\noise\noise 1.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\noise\noise 2.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\noise\noise 3.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\noise\noise 4.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\noise\noise 5.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 1.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 10.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 11.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 12.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 13.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 14.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 15.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 2.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 3.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 4.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 5.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 6.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 7.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 8.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\positive\positive 9.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\unknown\unknown 1.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\unknown\unknown 10.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\unknown\unknown 2.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\unknown\unknown 3.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\unknown\unknown 4.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\unknown\unknown 5.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\unknown\unknown 6.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\unknown\unknown 7.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\unknown\unknown 8.npy,Noise,0,mem5-aishwinth
+Noise\mem5-aishwinth\unknown\unknown 9.npy,Noise,0,mem5-aishwinth
+Noise\mem6-bhavesh\clapping\CLP.npy,Noise,0,mem6-bhavesh
+Noise\mem6-bhavesh\fan\FAN.npy,Noise,0,mem6-bhavesh
+Noise\mem6-bhavesh\furniture\FURNITURE.npy,Noise,0,mem6-bhavesh
+Noise\mem6-bhavesh\phone notification\Notification.npy,Noise,0,mem6-bhavesh
+Noise\mem6-bhavesh\silence\S.npy,Noise,0,mem6-bhavesh
+Positive\mem1 - vernica\HN1.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN10.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN11.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN12.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN13.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN14.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN15.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN2.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN3.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN4.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN5.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN6.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN7.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN8.npy,Positive,1,mem1 - vernica
+Positive\mem1 - vernica\HN9.npy,Positive,1,mem1 - vernica
+Positive\mem6-bhavesh\P1.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P10.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P11.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P12.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P13.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P14.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P15.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P2.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P3.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P4.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P5.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P6.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P7.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P8.npy,Positive,1,mem6-bhavesh
+Positive\mem6-bhavesh\P9.npy,Positive,1,mem6-bhavesh
+Unknown\mem1-vernica\light off\Light off.npy,Unknown,2,mem1-vernica
+Unknown\mem1-vernica\light on\Light on.npy,Unknown,2,mem1-vernica
+Unknown\mem1-vernica\switch off the light\Switch off the light.npy,Unknown,2,mem1-vernica
+Unknown\mem1-vernica\switch on the light\Switch on the light.npy,Unknown,2,mem1-vernica
+Unknown\mem1-vernica\switch the light off\Switch the light off.npy,Unknown,2,mem1-vernica
+Unknown\mem1-vernica\switch the light on\Switch the light on.npy,Unknown,2,mem1-vernica
+Unknown\mem1-vernica\turn off the light\Turn off the light.npy,Unknown,2,mem1-vernica
+Unknown\mem1-vernica\turn on the light\Turn on the light.npy,Unknown,2,mem1-vernica
+Unknown\mem1-vernica\turn the light off\Turn the light off.npy,Unknown,2,mem1-vernica
+Unknown\mem1-vernica\turn the light on\Turn the light on.npy,Unknown,2,mem1-vernica
+Unknown\mem6-bhavesh\light off\LO.npy,Unknown,2,mem6-bhavesh
+Unknown\mem6-bhavesh\light on\LON.npy,Unknown,2,mem6-bhavesh
+Unknown\mem6-bhavesh\switch off the light\SOL.npy,Unknown,2,mem6-bhavesh
+Unknown\mem6-bhavesh\switch on the light\SONL.npy,Unknown,2,mem6-bhavesh
+Unknown\mem6-bhavesh\switch the light off\STLO.npy,Unknown,2,mem6-bhavesh
+Unknown\mem6-bhavesh\switch the light on\STLON.npy,Unknown,2,mem6-bhavesh
+Unknown\mem6-bhavesh\turn off the light\TOL.npy,Unknown,2,mem6-bhavesh
+Unknown\mem6-bhavesh\turn on the light\TONL.npy,Unknown,2,mem6-bhavesh
+Unknown\mem6-bhavesh\turn the light off\TLO.npy,Unknown,2,mem6-bhavesh
+Unknown\mem6-bhavesh\turn the light on\TLON.npy,Unknown,2,mem6-bhavesh

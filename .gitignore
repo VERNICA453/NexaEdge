@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+
+raw/
+positive/
+unknown/
+noise/
+member2_handoff/
+
+Augmented/
+Normalized/
+processed/
+Dataset_Split/
